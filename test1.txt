@@ -1,0 +1,21 @@
+ppt slides points 
+1 slide - our project short idea 
+2 - slide - problem statemts , Why This Problem Matters
+slide 3 - Data Flow Diagram (Simple Illustration , Roadmap (6-Month Growth Plan) 
+Make your project look scalable:)
+Slide 4 — Our Solution: SignLens
+Slide 5 — How SignLens Works (Simple Workflow)
+Slide 6 — Key Features 
+(
+Real-time gesture recognition
+Two-way communication
+Supports Indian Sign Language (ISL)
+)
+slide 7 - Slide 12 — Challenges & Mitigation ( Different signing styles ) 
+slide 8 - Technical Architecture ( frontend , backend , api , AI moduls , Works on low-end devices )
+slide 9 - video work (flow Real-Time Demo Flow Slide )
+slide 10  — Impact  
+(  1. Multi-language voice output 
+   2. 
+)
+Slide 11 — Future Scope
