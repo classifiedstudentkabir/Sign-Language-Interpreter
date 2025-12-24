@@ -7,17 +7,10 @@ const gestureText = document.getElementById("gestureText");
 const startBtn = document.getElementById("startBtn");
 const stopBtn = document.getElementById("stopBtn");
 
-const speechText = document.getElementById("speechText");
-const startListenBtn = document.getElementById("startListen");
-const stopListenBtn = document.getElementById("stopListen");
-
 // ================== STATE ==================
 let isCameraRunning = false;
 let camera = null;
 let mediaStream = null;
-
-let recognition = null;
-let isListening = false;
 
 // Gesture stability
 let lastGesture = "";
@@ -38,47 +31,79 @@ hands.setOptions({
   minTrackingConfidence: 0.7,
 });
 
-// ================== HELPER FUNCTIONS ==================
+// ================== HELPERS ==================
 function isFingerUp(landmarks, tip, pip) {
   return landmarks[tip].y < landmarks[pip].y;
 }
 
+function countFingers(landmarks) {
+  let count = 0;
+  if (isFingerUp(landmarks, 8, 6)) count++;   // Index
+  if (isFingerUp(landmarks, 12, 10)) count++; // Middle
+  if (isFingerUp(landmarks, 16, 14)) count++; // Ring
+  if (isFingerUp(landmarks, 20, 18)) count++; // Pinky
+  return count;
+}
+
+// Palm facing camera heuristic
+function isPalmFacingCamera(landmarks) {
+  const wrist = landmarks[0];
+  const middleMCP = landmarks[9];
+  return wrist.y < middleMCP.y;
+}
+
+// ================== ONE HAND GESTURES ==================
 function detectOneHandGesture(landmarks) {
   const indexUp  = isFingerUp(landmarks, 8, 6);
   const middleUp = isFingerUp(landmarks, 12, 10);
   const ringUp   = isFingerUp(landmarks, 16, 14);
   const pinkyUp  = isFingerUp(landmarks, 20, 18);
 
-  const thumbTip  = landmarks[4];
-  const thumbBase = landmarks[2];
+  const thumbUp = landmarks[4].y < landmarks[2].y;
 
-  // Distance between thumb & index (used to avoid confusion)
-  const dxTI = landmarks[4].x - landmarks[8].x;
-  const dyTI = landmarks[4].y - landmarks[8].y;
-  const thumbIndexDistance = Math.sqrt(dxTI * dxTI + dyTI * dyTI);
+  const fingerCount = countFingers(landmarks);
 
   /* =========================
-     THUMBS UP / DOWN (STRICT)
+     NUMBERS 0–5 (STRICT)
      ========================= */
-  const thumbClearlyIsolated =
+  if (!thumbUp) {
+    if (!indexUp && !middleUp && !ringUp && !pinkyUp) return "0";
+    if ( indexUp && !middleUp && !ringUp && !pinkyUp) return "1";
+    if ( indexUp && middleUp && !ringUp && !pinkyUp) return "2";
+    if ( indexUp && middleUp && ringUp && !pinkyUp) return "3";
+    if ( indexUp && middleUp && ringUp && pinkyUp) return "4";
+  }
+
+  if (
+    indexUp &&
+    middleUp &&
+    ringUp &&
+    pinkyUp &&
+    thumbUp
+  ) {
+    return "5";
+  }
+
+  /* =========================
+     THUMBS UP / DOWN
+     ========================= */
+  if (
     !indexUp &&
     !middleUp &&
     !ringUp &&
-    !pinkyUp &&
-    thumbIndexDistance > 0.08; // important
-
-  if (thumbClearlyIsolated) {
-    if (thumbTip.y < thumbBase.y - 0.03) {
-      return "THUMBS UP";
-    }
-    if (thumbTip.y > thumbBase.y + 0.03) {
-      return "THUMBS DOWN";
-    }
+    !pinkyUp
+  ) {
+    if (thumbUp) return "THUMBS UP";
+    if (!thumbUp) return "THUMBS DOWN";
   }
 
   /* =========================
      OK
      ========================= */
+  const dx = landmarks[4].x - landmarks[8].x;
+  const dy = landmarks[4].y - landmarks[8].y;
+  const thumbIndexDistance = Math.sqrt(dx * dx + dy * dy);
+
   if (
     thumbIndexDistance < 0.04 &&
     middleUp &&
@@ -94,74 +119,43 @@ function detectOneHandGesture(landmarks) {
   if (indexUp && middleUp && ringUp && pinkyUp) {
     return "STOP";
   }
-    /* =========================
-    POINT LEFT / RIGHT
-    ========================= */
-  if (
-    indexUp &&
-    !middleUp &&
-    !ringUp &&
-    !pinkyUp
-  ) {
-    const indexTip = landmarks[8];
-    const indexBase = landmarks[5];
-
-    // POINT RIGHT
-    if (indexTip.x > indexBase.x + 0.04) {
-      return "POINT RIGHT";
-    }
-
-    // POINT LEFT
-    if (indexTip.x < indexBase.x - 0.04) {
-      return "POINT LEFT";
-    }
-  }
-
 
   /* =========================
-     NO (INDEX ONLY)
+     POINT LEFT / RIGHT
      ========================= */
-  if (
-    indexUp &&
-    !ringUp &&
-    !pinkyUp &&
-    landmarks[12].y > landmarks[10].y
-  ) {
-    return "NO";
+  if (indexUp && !middleUp && !ringUp && !pinkyUp) {
+    const tip = landmarks[8];
+    const base = landmarks[5];
+    if (tip.x > base.x + 0.04) return "POINT RIGHT";
+    if (tip.x < base.x - 0.04) return "POINT LEFT";
   }
 
   /* =========================
-     YES (FIST – FALLBACK)
+     COMMUNICATION
      ========================= */
-  if (
-    !indexUp &&
-    !middleUp &&
-    !ringUp &&
-    !pinkyUp
-  ) {
+  if (!thumbUp && !indexUp && !middleUp && !ringUp && !pinkyUp) {
     return "YES";
+  }
+
+  if (!thumbUp && indexUp && !middleUp && !ringUp && !pinkyUp) {
+    return "NO";
   }
 
   return null;
 }
 
-
+// ================== STABILITY ==================
 function getStableGesture(current) {
-  if (current === lastGesture) {
-    sameGestureCount++;
-  } else {
+  if (current === lastGesture) sameGestureCount++;
+  else {
     sameGestureCount = 0;
     lastGesture = current;
   }
-
-  if (sameGestureCount >= STABLE_FRAMES) {
-    stableGesture = current;
-  }
-
+  if (sameGestureCount >= STABLE_FRAMES) stableGesture = current;
   return stableGesture;
 }
 
-// ================== RESULTS CALLBACK ==================
+// ================== RESULTS ==================
 hands.onResults((results) => {
   if (!isCameraRunning) return;
 
@@ -169,62 +163,31 @@ hands.onResults((results) => {
 
   canvasElement.width = videoElement.videoWidth;
   canvasElement.height = videoElement.videoHeight;
-
   canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-  canvasCtx.drawImage(
-    results.image,
-    0,
-    0,
-    canvasElement.width,
-    canvasElement.height
-  );
+  canvasCtx.drawImage(results.image, 0, 0);
 
   if (handCount === 1) {
     const landmarks = results.multiHandLandmarks[0];
+    drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, { color: "#00FF00" });
+    drawLandmarks(canvasCtx, landmarks, { color: "#FF0000" });
 
-    drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {
-      color: "#00FF00",
-      lineWidth: 3,
-    });
-
-    drawLandmarks(canvasCtx, landmarks, {
-      color: "#FF0000",
-      lineWidth: 2,
-      radius: 4,
-    });
-
-    const rawGesture = detectOneHandGesture(landmarks);
-    const finalGesture = getStableGesture(rawGesture);
-
-    gestureText.textContent = `Gesture: ${finalGesture || "Detecting..."}`;
-    gestureText.className = "";
-
-    if (finalGesture === "YES") gestureText.classList.add("gesture-YES");
-    if (finalGesture === "NO") gestureText.classList.add("gesture-NO");
-    if (finalGesture === "STOP") gestureText.classList.add("gesture-STOP");
+    const gesture = getStableGesture(detectOneHandGesture(landmarks));
+    gestureText.textContent = `Gesture: ${gesture || "Detecting..."}`;
   } else {
     gestureText.textContent = "Gesture: None";
     lastGesture = "";
     sameGestureCount = 0;
-    stableGesture = "";
   }
 });
 
-// ================== CAMERA CONTROL ==================
+// ================== CAMERA ==================
 startBtn.addEventListener("click", async () => {
   if (isCameraRunning) return;
-
   mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
   videoElement.srcObject = mediaStream;
 
   camera = new Camera(videoElement, {
-    onFrame: async () => {
-      if (isCameraRunning) {
-        await hands.send({ image: videoElement });
-      }
-    },
-    width: 640,
-    height: 480,
+    onFrame: async () => await hands.send({ image: videoElement }),
   });
 
   isCameraRunning = true;
@@ -233,39 +196,9 @@ startBtn.addEventListener("click", async () => {
 
 stopBtn.addEventListener("click", () => {
   if (!isCameraRunning) return;
-
   camera.stop();
   mediaStream.getTracks().forEach((t) => t.stop());
-
   videoElement.srcObject = null;
-  canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-
   isCameraRunning = false;
   gestureText.textContent = "Gesture: —";
-});
-
-// ================== SPEECH TO TEXT ==================
-const SpeechRecognition =
-  window.SpeechRecognition || window.webkitSpeechRecognition;
-
-startListenBtn.addEventListener("click", () => {
-  if (!SpeechRecognition || isListening) return;
-
-  recognition = new SpeechRecognition();
-  recognition.lang = "en-US";
-
-  recognition.onresult = (e) => {
-    speechText.textContent = e.results[0][0].transcript;
-  };
-
-  isListening = true;
-  recognition.start();
-});
-
-stopListenBtn.addEventListener("click", () => {
-  if (recognition && isListening) {
-    recognition.stop();
-    isListening = false;
-    speechText.textContent = "Stopped listening";
-  }
 });
