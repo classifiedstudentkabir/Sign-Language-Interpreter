@@ -5,7 +5,7 @@ export function detectOneHandGesture(landmarks) {
   const fingers = getFingerStates(landmarks);
 
   for (const sign of ONE_HAND_SIGNS) {
-    // function-based gestures
+    // function-based gesture
     if (sign.match) {
       if (sign.match({ fingers, landmarks })) {
         return sign.name;
@@ -13,7 +13,7 @@ export function detectOneHandGesture(landmarks) {
       continue;
     }
 
-    // finger-state gestures
+    // finger-state gesture
     let match = true;
     for (const finger in sign.fingers) {
       if (sign.fingers[finger] !== fingers[finger]) {
@@ -25,5 +25,5 @@ export function detectOneHandGesture(landmarks) {
     if (match) return sign.name;
   }
 
-  return "Unknown";
+  return "None";
 }

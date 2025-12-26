@@ -33,6 +33,7 @@ export const ONE_HAND_SIGNS = [
     name: "FOUR",
     fingers: { thumb: true, index: true, middle: true, ring: true, pinky: false },
   },
+/*
   {
     name: "THUMBS_UP",
     type: "static",
@@ -52,6 +53,8 @@ export const ONE_HAND_SIGNS = [
       );
     }
   },
+*/
+/*
   {
     name: "THUMBS_DOWN",
     type: "static",
@@ -71,6 +74,8 @@ export const ONE_HAND_SIGNS = [
       );
     }
   },
+*/
+/*
   {
     name: "POINT_LEFT",
     type: "static",
@@ -90,7 +95,9 @@ export const ONE_HAND_SIGNS = [
       );
     }
   },
+*/
 
+/*
   {
     name: "POINT_RIGHT",
     type: "static",
@@ -111,4 +118,5 @@ export const ONE_HAND_SIGNS = [
       );
     }
   },
+*/
 ];
