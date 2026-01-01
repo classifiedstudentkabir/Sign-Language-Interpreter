@@ -1,47 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>SignLens – Hand Detection</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignLens - AI-Based Sign Language Interpreter</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="container">
+        <header>
+            <h1>SignLens - AI-Based Sign Language Interpreter</h1>
+        </header>
 
-  <h1>SignLens – AI-Based Sign Language Interpreter</h1>
+        <main>
+            <!-- Video Container -->
+            <div class="video-container">
+                <video id="webcam" autoplay playsinline></video>
+                <canvas id="output-canvas"></canvas>
+            </div>
 
-  <div class="camera-container">
-    <video id="video" autoplay playsinline muted></video>
-    <canvas id="canvas"></canvas>
-    <div id="gestureText">Gesture: None</div>
-    <!-- SPEECH TO TEXT SECTION -->
-    <div class="speech-box">
-      <h3>Speech to Text</h3>
+            <!-- Gesture Display -->
+            <div class="gesture-container">
+                <h2>Detected Gesture:</h2>
+                <div id="gesture-text">No gesture detected</div>
+            </div>
 
-      <div id="speechText">Say something...</div>
+            <!-- Debug Info (Optional) -->
+            <div class="debug-container" id="debug-info" style="display: none;">
+                <small>Debug: <span id="debug-text"></span></small>
+            </div>
 
-      <button id="startListen">Start Listening</button>
-      <button id="stopListen">Stop Listening</button>
+            <!-- Speech to Text Section -->
+            <div class="speech-container">
+                <h3>Speech to Text</h3>
+                <p id="speech-output">Say something...</p>
+                <div class="button-group">
+                    <button id="start-listening" class="btn btn-primary">Start Listening</button>
+                    <button id="stop-listening" class="btn btn-secondary">Stop Listening</button>
+                </div>
+            </div>
+        </main>
     </div>
 
-  </div>
+    <!-- MediaPipe CDN - CRITICAL: Load in correct order -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
 
-  <div class="controls">
-    <button id="startBtn">Start Camera</button>
-    <button id="stopBtn">Stop Camera</button>
-  </div>
-
-  <div id="status" class="status" aria-live="polite"></div>
-
-  <!-- MediaPipe -->
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
-
-  <!-- App -->
-  <script src="script.js" defer></script>
-
-
+    <!-- Your JavaScript Files -->
+    <script src="src/gesture-detection.js"></script>
+    <script src="src/main.js"></script>
 </body>
 </html>
-
-<!--python -m http.server 8000 run this in terminal to start a local server -->
