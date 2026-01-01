@@ -1,3 +1,65 @@
+
+# 🚀 How to Run This Project
+
+## Step-by-Step Instructions
+
+**Step 1️⃣** - Open Terminal
+- If in VS Code, press `Ctrl + Shift + `` to open the terminal
+
+**Step 2️⃣** - Start the Server
+- Type: `python -m http.server 8000`
+
+**Step 3️⃣** - Open in Chrome
+- Go to `localhost:8000` or `http://localhost:8000/`
+
+**Step 4️⃣** - Allow Camera Access
+- Click "Allow" when Chrome asks for camera permission
+
+**Step 5️⃣** - Test Gestures
+- Show hand gestures to the camera
+- **Note**: Gestures work better with specific hands
+  - Example: LEFT open palm + RIGHT thumbs up ✅ works
+  - But opposite order ❌ may not work
+  - Try different hand combinations if a gesture doesn't detect
+
+---
+
+## ✅ Ready to Test!
+
+Here are all the hand gestures you can make: 
+
+## ✅ Single-Hand Gestures (10)
+
+| #  | Gesture      | How to Make It                             | Emoji |
+|----|--------------|-------------------------------------------|-------|
+| 1  | NUMBER_0     | Make a tight fist (all fingers curled)    | ✊    |
+| 2  | NUMBER_1     | Extend only index finger, rest curled     | ☝️    |
+| 3  | NUMBER_2     | Extend index + middle, thumb curled       | ✌️    |
+| 4  | NUMBER_3     | Extend index + middle + ring, thumb IN    | ☝️✌️  |
+| 5  | NUMBER_4     | Extend all 4 fingers, thumb curled       | ✋    |
+| 6  | NUMBER_5     | Open palm - all 5 fingers extended        | ✋    |
+| 7  | THUMBS_UP    | Make fist with thumb pointing UP          | 👍    |
+| 8  | THUMBS_DOWN  | Make fist with thumb pointing DOWN        | 👎    |
+| 9  | OK           | Touch thumb + index, extend 3 fingers     | 👌    |
+| 10 | PEACE        | Extend index + middle (V), thumb OUT      | ✌️    |
+
+## 🎉 Two-Hand Gestures (10)
+
+| #  | Gesture    | Left Hand    | Right Hand   | Emoji  | How to Make It                  |
+|----|-----------|--------------|--------------|--------|----------------------------------|
+| 11 | GOOD_JOB  | THUMBS_UP    | THUMBS_UP    | 👍👍   | Both hands showing thumbs up    |
+| 12 | PERFECT   | OK           | OK           | 👌👌   | Both hands making OK gesture    |
+| 13 | CONFIRMED | THUMBS_UP    | OK           | 👍👌   | Left: thumbs up, Right: OK sign |
+| 14 | ALL_GOOD  | OK           | THUMBS_UP    | 👌👍   | Left: OK sign, Right: thumbs up |
+| 15 | APPROVED  | THUMBS_UP    | PEACE        | 👍✌️   | Left: thumbs up, Right: peace   |
+| 16 | ACCEPTED  | NUMBER_5     | THUMBS_UP    | ✋👍   | Left: open palm, Right: thumbs  |
+| 17 | REJECTED  | NUMBER_5     | THUMBS_DOWN  | ✋👎   | Left: open palm, Right: thumbs down |
+| 18 | READY     | NUMBER_0     | THUMBS_UP    | ✊👍   | Left: fist, Right: thumbs up    |
+| 19 | SELECT    | PEACE        | NUMBER_1     | ✌️👉   | Left: peace, Right: pointing    |
+| 20 | ALERT     | NUMBER_5     | PEACE        | ✋✌️   | Left: open palm, Right: peace   |
+
+
+
 # 🎯 SignLens - Gesture Quick Reference
 
 **Status**: ✅ All 10 Gestures Working  
