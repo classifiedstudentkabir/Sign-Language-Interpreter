@@ -4,7 +4,7 @@
 ## Step-by-Step Instructions
 
 **Step 1️⃣** - Open Terminal
-- If in VS Code, press `Ctrl + Shift + `` to open the terminal
+- If in VS Code, press Ctrl + Shift + ` to open the terminal
 
 **Step 2️⃣** - Start the Server
 - Type: `python -m http.server 8000`
