@@ -1,151 +1,81 @@
+# SignLens - AI-Based Sign Language Interpreter
 
-# 📌 How get this hacknova folder into your PC
+A real-time web application that interprets sign language gestures using computer vision and machine learning (MediaPipe). Designed for accessibility and inclusive education.
 
-## 🔽 **1. Prepare Your Folder + Clone the Repository**
+## 🚀 Live Demo
 
-1. **Create a Folder on Your PC**
+**[Click here to view the live project](https://classifiedstudentkabir.github.io/Sign-Language-Interpreter/)
 
-   * Example:
+## ✨ Features
 
-     * Go to **D drive**
-     * Right-click → **New Folder**
-     * Name it: `HackNova` *(or anything you like)*
+- **Real-Time Hand Tracking:** Uses MediaPipe Hands for high-performance hand landmark detection.
+- **Multi-Gesture Recognition:** Supports single-hand and two-hand gestures.
+- **Responsive Design:** Works on desktop and mobile browsers.
+- **Privacy-Focused:** All processing happens locally in the browser; video data is never sent to a server.
+- **Speech-to-Text:** Integrated speech recognition for two-way communication.
 
-2. **Open That Folder in VS Code**
+## 👐 Supported Gestures
 
-   * Open VS Code
-   * Click **File → Open Folder**
-   * Select the folder you just created
+See the full [Gesture Guide](SignLens/frontend/gesture.md) for detailed instructions.
 
-3. **Open the Terminal in VS Code**
+### Basic Numbers
+- **0 - 5** (Single hand)
+- **6 - 10** (Two hands)
 
-   * Click **View → Terminal**
+### Common Phrases
+- **Yes / No**
+- **Thumbs Up / Down**
+- **Okay**
+- **Thank You**
+- **Call Me / I Love You**
+- **Hello / Bye**
+- **Help / Stop**
+- **And more...**
 
-4. **Clone the Repository Inside That Folder**
+## 🛠️ Tech Stack
 
-   * Type this command:
+- **Frontend:** HTML5, CSS3, JavaScript (Vanilla)
+- **AI/ML:** MediaPipe Hands (Google), Custom Geometric Classifiers
+- **Deployment:** GitHub Pages
 
-```bash
-git clone https://github.com/classifiedstudentkabir/Sign-Language-Interpreter.git
+## 📂 Project Structure
+
+```
+D:\hacknova\SignLens\
+├───frontend\           # Main application code
+│   ├───index.html      # (Old UI restored in root for live site)
+│   ├───style.css       # New styling (optional)
+│   ├───old-style.css   # Original styling (active)
+│   ├───gesture.md      # Guide to gestures
+│   └───src\
+│       ├───app.js      # Main logic
+│       └───gesture-detection.js # Gesture recognition engine
+├───backend\            # (Optional backend components)
+└───...
 ```
 
-This will download the full project **inside the folder you opened in VS Code**.
+## 👨‍💻 Development
+
+### Setup
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/classifiedstudentkabir/Sign-Language-Interpreter.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd Sign-Language-Interpreter
+   ```
+3. Open `index.html` in your browser to test locally.
+
+### Contributing
+
+1. **Pull** latest changes: `git pull origin main`
+2. **Make** your changes.
+3. **Stage** changes: `git add .`
+4. **Commit**: `git commit -m "Description of changes"`
+5. **Push**: `git push origin main`
 
 ---
 
-## 📂 **2. Move Inside the Project Folder**
-
-After cloning, enter the newly downloaded project directory:
-
-```bash
-cd Sign-Language-Interpreter
-```
-
-Check the files:
-
-```bash
-ls
-```
-
-You should now see all project files inside the folder.
-
----
-
-## 🔍 **3. Check Your Current Branch**
-
-Make sure you are on the correct branch (`main`):
-
-```bash
-git status
-```
-
-If it shows:
-
-```
-On branch main
-```
-
-you’re good to go.
-
----
-
-# 🔄 Staying Up-To-Date With Team Changes
-
-If someone from the team uploads new work (like PPT, code, images, or documents), you must **pull** the latest changes.
-
-Run:
-
-```bash
-git pull origin main
-```
-
-This updates your local folder to match the GitHub repo.
-
----
-
-# ⬆️ Uploading Your Own Work (Your Changes)
-
-Whenever you add or modify files, follow these 3 important steps:
-
----
-
-## 1️⃣ Stage Your Changes
-
-```bash
-git add .
-```
-
-This includes all new/updated files.
-
----
-
-## 2️⃣ Commit Your Changes
-
-```bash
-git commit -m "Your update message here"
-```
-
-Example:
-
-```bash
-git commit -m "Added PPT slides and images"
-```
-
----
-
-## 3️⃣ Push to GitHub
-
-```bash
-git push origin main
-```
-
-This uploads your work so the team can see it.
-
----
-
-# 🧑‍💻 First-Time Git Setup (Only Once)
-
-If you're using Git for the very first time on your laptop, set your identity:
-
-```bash
-git config --global user.name "Your Full Name"
-git config --global user.email "your_github_email@example.com"
-```
-
-Without this, Git will not allow you to commit.
-
----
-
-# ⚠️ Useful Commands Quick Reference
-
-| Task                 | Command                |
-| -------------------- | ---------------------- |
-| Check where you are  | `pwd`                  |
-| List files in folder | `ls`                   |
-| Check current branch | `git status`           |
-| See if remote is set | `git remote -v`        |
-| Pull latest changes  | `git pull origin main` |
-| Upload your work     | `git push origin main` |
-| Stage all files      | `git add .`            |
-| Commit with message  | `git commit -m "msg"`  |
-
+*Part of HackNova Hackathon Project - Team SignLens*
