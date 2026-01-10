@@ -1,3 +1,607 @@
+# Project Transfer
+
+## index.html
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignLens - AI-Based Sign Language Interpreter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>SignLens - AI-Based Sign Language Interpreter</h1>
+        </header>
+
+        <main>
+            <!-- Video Container -->
+            <div class="video-container">
+                <video id="webcam" autoplay playsinline></video>
+                <canvas id="output-canvas"></canvas>
+            </div>
+
+            <!-- Gesture Display -->
+            <div class="gesture-container">
+                <h2>Detected Gesture:</h2>
+                <div id="gesture-text">No gesture detected</div>
+            </div>
+
+            <!-- Debug Info (Optional) -->
+            <div class="debug-container" id="debug-info" style="display: none;">
+                <small>Debug: <span id="debug-text"></span></small>
+            </div>
+
+            <!-- Speech to Text Section -->
+            <div class="speech-container">
+                <h3>Speech to Text</h3>
+                <p id="speech-output">Say something...</p>
+                <div class="button-group">
+                    <button id="start-listening" class="btn btn-primary">Start Listening</button>
+                    <button id="stop-listening" class="btn btn-secondary">Stop Listening</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- MediaPipe CDN - CRITICAL: Load in correct order -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+
+    <!-- Your JavaScript Files -->
+    <script src="src/gesture-detection.js"></script>
+    <script src="src/main.js"></script>
+</body>
+</html>
+```
+
+## style.css
+```css
+/* ========================================
+   SIGNLENS - COMPLETE STYLING
+   ======================================== */
+
+/* Reset & Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 900px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+/* Header */
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 2.5em;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    margin-bottom: 10px;
+}
+
+/* ========================================
+   VIDEO CONTAINER - CRITICAL FIX
+   ======================================== */
+.video-container {
+    position: relative;
+    width: 100%;
+    max-width: 640px;
+    height: 480px;
+    margin: 0 auto 30px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    background: #000;
+}
+
+/* Video Element - HIDDEN (canvas shows instead) */
+#webcam {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none; /* ✅ CRITICAL: Hide video, show canvas */
+}
+
+/* Canvas Element - VISIBLE */
+#output-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1; /* ✅ Ensure canvas is on top */
+}
+
+/* ========================================
+   GESTURE DISPLAY
+   ======================================== */
+.gesture-container {
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.gesture-container h2 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    color: #ffffff;
+}
+
+#gesture-text {
+    font-size: 3em;
+    font-weight: bold;
+    color: #999;
+    padding: 25px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Gesture Detected Animation */
+.gesture-detected {
+    animation: pulse 0.3s ease;
+    background: rgba(0, 255, 0, 0.2) !important;
+    transform: scale(1.05);
+}
+
+ @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* ========================================
+   DEBUG CONTAINER
+   ======================================== */
+.debug-container {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+}
+
+/* ========================================
+   SPEECH TO TEXT SECTION
+   ======================================== */
+.speech-container {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+}
+
+.speech-container h3 {
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    color: #ffffff;
+}
+
+#speech-output {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 15px;
+    margin: 15px;
+    min-height: 50px;
+    font-size: 1.1em;
+    color: #ffffff;
+}
+
+/* ========================================
+   BUTTONS
+   ======================================== */
+.button-group {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 12px 30px;
+    font-size: 1em;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+}
+
+.btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+ @media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    header h1 {
+        font-size: 1.8em;
+    }
+
+    .video-container {
+        height: auto;
+        aspect-ratio: 4/3;
+    }
+
+    #gesture-text {
+        font-size: 2em;
+        padding: 15px;
+        min-height: 80px;
+    }
+
+    .gesture-container h2 {
+        font-size: 1.2em;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 0.9em;
+    }
+}
+
+ @media (max-width: 480px) {
+    header h1 {
+        font-size: 1.5em;
+    }
+
+    #gesture-text {
+        font-size: 1.5em;
+        letter-spacing: 1px;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
+}
+
+/* ========================================
+   LOADING STATE
+   ======================================== */
+.loading {
+    text-align: center;
+    padding: 40px;
+    font-size: 1.2em;
+}
+
+.loading::after {
+    content: '...';
+    animation: dots 1.5s infinite;
+}
+
+ @keyframes dots {
+    0%, 20% { content: '.'; }
+    40% { content: '..'; }
+    60%, 100% { content: '...'; }
+}
+
+/* ========================================
+   ERROR STATE
+   ======================================== */
+.error {
+    background: rgba(255, 0, 0, 0.2);
+    border: 2px solid #ff0000;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 20px 0;
+    color: #ff6b6b;
+    text-align: center;
+}
+```
+
+## src/main.js
+```javascript
+// ========================================
+// SIGNLENS - MAIN APPLICATION (TWO-HAND SUPPORT)
+// ========================================
+
+// DOM Elements
+const videoElement = document.getElementById('webcam');
+const canvasElement = document.getElementById('output-canvas');
+const canvasCtx = canvasElement.getContext('2d');
+const gestureText = document.getElementById('gesture-text');
+const debugText = document.getElementById('debug-text');
+
+// ========================================
+// GESTURE DETECTOR INITIALIZATION
+// ========================================
+const gestureDetector = new ImprovedGestureDetector();
+
+// ========================================
+// MEDIAPIPE HANDS SETUP - TWO-HAND DETECTION ENABLED
+// ========================================
+const hands = new Hands({
+  locateFile: (file) => {
+    return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
+  }
+});
+
+hands.setOptions({
+  maxNumHands: 2,              // ✅ CHANGED: Detect up to 2 hands
+  modelComplexity: 1,          // Full model for accuracy
+  minDetectionConfidence: 0.5,
+  minTrackingConfidence: 0.5
+});
+
+// ========================================
+// MEDIAPIPE RESULTS CALLBACK
+// ========================================
+hands.onResults((results) => {
+  // Clear and redraw canvas
+  canvasCtx.save();
+  canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+  canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
+
+  // Draw hand landmarks if detected
+  if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+    for (const landmarks of results.multiHandLandmarks) {
+      // Draw connections (skeleton)
+      drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {
+        color: '#00FF00',
+        lineWidth: 2
+      });
+
+      // Draw landmarks (points)
+      drawLandmarks(canvasCtx, landmarks, {
+        color: '#FF0000',
+        lineWidth: 1,
+        radius: 3
+      });
+    }
+
+    // Debug info
+    if (debugText) {
+      const handCount = results.multiHandLandmarks.length;
+      const handLabels = results.multiHandedness.map(h => h.label).join(', ');
+      debugText.textContent = `Hands: ${handCount} (${handLabels})`;
+    }
+  } else {
+    if (debugText) {
+      debugText.textContent = 'No hands detected';
+    }
+  }
+
+  canvasCtx.restore();
+
+  // ========================================
+  // GESTURE DETECTION (TWO-HAND PRIORITY)
+  // ========================================
+  try {
+    const gestureResult = gestureDetector.process(results);
+    updateGestureUI(gestureResult);
+  } catch (error) {
+    console.error('Gesture detection error:', error);
+    gestureText.textContent = 'Detection Error';
+    gestureText.style.color = '#ff0000';
+  }
+});
+
+// ========================================
+// UI UPDATE FUNCTION
+// ========================================
+function updateGestureUI(gestureResult) {
+  const gestureTextElement = document.getElementById('gesture-text');
+
+  if (!gestureTextElement) {
+    console.error('Gesture text element not found!');
+    return;
+  }
+
+  if (!gestureResult) {
+    gestureTextElement.textContent = 'No gesture detected';
+    gestureTextElement.style.color = '#999';
+    return;
+  }
+
+  // Format gesture name (e.g., "THUMBS_UP" → "Thumbs Up")
+  const displayName = formatGestureName(gestureResult.gesture);
+  gestureTextElement.textContent = displayName;
+  
+  // Use different color for two-hand gestures
+  if (gestureResult.gesture === 'I LOVE YOU' || gestureResult.gesture === 'GOOD JOB') {
+    gestureTextElement.style.color = '#FF1493'; // Deep pink for two-hand gestures
+  } else {
+    gestureTextElement.style.color = '#00ff00'; // Green for single-hand gestures
+  }
+
+  // Trigger animation
+  gestureTextElement.classList.add('gesture-detected');
+  setTimeout(() => {
+    gestureTextElement.classList.remove('gesture-detected');
+  }, 300);
+
+  // Log to console with details
+  let logMessage = `✓ Detected: ${gestureResult.gesture} (confidence: ${gestureResult.confidence.toFixed(2)})`;
+  if (gestureResult.details) {
+    logMessage += ` - ${gestureResult.details}`;
+  }
+  console.log(logMessage);
+}
+
+/**
+ * Format gesture name for display
+ * "THUMBS_UP" → "Thumbs Up"
+ * "I LOVE YOU" → "I Love You"
+ * "NUMBER_5" → "Number 5"
+ */
+function formatGestureName(gesture) {
+  return gesture
+    .split('_')
+    .map(word => word.charAt(0) + word.slice(1).toLowerCase())
+    .join(' ');
+}
+
+// ========================================
+// SPEECH RECOGNITION (Optional)
+// ========================================
+let recognition = null;
+if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SpeechRecognition();
+  recognition.continuous = true;
+  recognition.interimResults = true;
+  recognition.lang = 'en-US';
+
+  recognition.onresult = (event) => {
+    let finalTranscript = '';
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      const transcript = event.results[i][0].transcript;
+      if (event.results[i].isFinal) {
+        finalTranscript += transcript + ' ';
+      }
+    }
+    if (finalTranscript) {
+      document.getElementById('speech-output').textContent = finalTranscript;
+    }
+  };
+
+  recognition.onerror = (event) => {
+    console.error('Speech recognition error:', event.error);
+  };
+}
+
+// Speech buttons
+document.getElementById('start-listening')?.addEventListener('click', () => {
+  if (recognition) {
+    recognition.start();
+    document.getElementById('speech-output').textContent = 'Listening...';
+  }
+});
+
+document.getElementById('stop-listening')?.addEventListener('click', () => {
+  if (recognition) {
+    recognition.stop();
+    document.getElementById('speech-output').textContent = 'Stopped listening.';
+  }
+});
+
+// ========================================
+// CAMERA SETUP
+// ========================================
+const camera = new Camera(videoElement, {
+  onFrame: async () => {
+    await hands.send({ image: videoElement });
+  },
+  width: 640,
+  height: 480
+});
+
+// ========================================
+// INITIALIZATION
+// ========================================
+async function initializeApp() {
+  try {
+    console.log('🚀 Starting SignLens with Two-Hand Support...');
+
+    // Start camera
+    await camera.start();
+    console.log('✓ Camera started');
+
+    // Set canvas size
+    canvasElement.width = 640;
+    canvasElement.height = 480;
+
+    console.log('✓ SignLens initialized successfully!');
+    console.log('✓ Two-hand gesture detection enabled');
+    gestureText.textContent = 'Ready - Show a gesture!';
+    gestureText.style.color = '#00ff00';
+  } catch (error) {
+    console.error('❌ Initialization error:', error);
+    gestureText.textContent = 'Error: ' + error.message;
+    gestureText.style.color = '#ff0000';
+  }
+}
+
+// Wait for DOM to load
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeApp);
+} else {
+  initializeApp();
+}
+
+// ========================================
+// CLEANUP ON PAGE UNLOAD
+// ========================================
+window.addEventListener('beforeunload', () => {
+  if (camera) camera.stop();
+  if (recognition) recognition.stop();
+  console.log('SignLens stopped');
+});
+```
+
+## src/gesture-detection.js
+```javascript
 /**
  * PRODUCTION GESTURE DETECTION - SignLens
  * ✅ NUMBER_0 to NUMBER_10 (number gestures, 6-10 using two hands)
@@ -41,7 +645,7 @@ class ImprovedGestureDetector {
       left: { lastGesture: null, frameCount: 0 },
       right: { lastGesture: null, frameCount: 0 }
     };
-    this.STABILITY_THRESHOLD = 5; // Reduced to 5 for better responsiveness
+    this.STABILITY_THRESHOLD = 3; // Require 3 consecutive frames per hand
   }
 
   // ==================== HELPER FUNCTIONS ====================
@@ -576,10 +1180,10 @@ class ImprovedGestureDetector {
       };
     }
 
-    // WE_ARE_SILENT_CODERS: NUMBER_0 + NUMBER_0
+    // HOW_ARE_YOU: NUMBER_0 + NUMBER_0
     if (left === 'NUMBER_0' && right === 'NUMBER_0') {
       return {
-        gesture: 'WE_ARE_SILENT_CODERS',
+        gesture: 'HOW_ARE_YOU',
         confidence: minConfidence,
         details: '✊ + ✊'
       };
@@ -618,15 +1222,6 @@ class ImprovedGestureDetector {
         gesture: 'QUESTION',
         confidence: minConfidence,
         details: '☝️ + ☝️'
-      };
-    }
-
-    // LETS_BEGIN: THUMBS_UP + NUMBER_1
-    if ((left === 'THUMBS_UP' && right === 'NUMBER_1') || (left === 'NUMBER_1' && right === 'THUMBS_UP')) {
-      return {
-        gesture: 'LETS_BEGIN',
-        confidence: minConfidence,
-        details: '👍 + ☝️'
       };
     }
 
@@ -736,9 +1331,9 @@ class ImprovedGestureDetector {
     // WAIT: NUMBER_0 (Fist) + NUMBER_5 (Open Palm)
     if ((left === 'NUMBER_0' && right === 'NUMBER_5') || (left === 'NUMBER_5' && right === 'NUMBER_0')) {
       return {
-        gesture: 'WE_BUILT_SIGNLENS',
+        gesture: 'WAIT',
         confidence: minConfidence,
-        details: 'We built SignLens'
+        details: '✊ + ✋'
       };
     }
 
@@ -891,3 +1486,4 @@ class ImprovedGestureDetector {
     console.log('Thumb Up:', this.isThumbUp(landmarks));
   }
 }
+```

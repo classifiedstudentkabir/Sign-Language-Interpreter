@@ -3,43 +3,233 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SignLens - AI-Based Sign Language Interpreter</title>
+    <title>SIGN A.I INTERPRETER - Bridging the Silence</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>SignLens - AI-Based Sign Language Interpreter</h1>
-        </header>
-
-        <main>
-            <!-- Video Container -->
-            <div class="video-container">
-                <video id="webcam" autoplay playsinline></video>
-                <canvas id="output-canvas"></canvas>
+    <!-- Landing Page -->
+    <div id="landingPage" class="page">
+        <div class="header">
+            <h1 class="main-heading">SIGN A.I INTERPRETER</h1>
+            <p class="tagline">Bridging the Silence, Seamlessly</p>
+        </div>
+        
+        <div class="content-area">
+            <!-- Circular Hand Gestures -->
+            <div class="gesture-orbit-container">
+                <div class="orbit-circle"></div>
+                <div class="orbit-center">
+                    <div id="centerEmoji">🤖</div>
+                </div>
+                <div id="gestureName" class="gesture-name"></div>
             </div>
-
-            <!-- Gesture Display -->
-            <div class="gesture-container">
-                <h2>Detected Gesture:</h2>
-                <div id="gesture-text">No gesture detected</div>
+            
+            <!-- Get Started Button -->
+            <div class="get-started-container">
+                <button id="getStartedBtn" class="get-started-btn">GET STARTED</button>
+                <p class="btn-subtitle">Experience real-time sign language interpretation powered by advanced AI</p>
             </div>
-
-            <!-- Debug Info (Optional) -->
-            <div class="debug-container" id="debug-info" style="display: none;">
-                <small>Debug: <span id="debug-text"></span></small>
+        </div>
+        
+        <!-- Feature Icons -->
+        <div class="feature-icons">
+            <div class="feature" id="privacyFeature">
+                <i class="fas fa-shield-alt feature-icon"></i>
+                <span class="feature-label">Privacy</span>
             </div>
+            <div class="feature" id="aiFeature">
+                <i class="fas fa-brain feature-icon"></i>
+                <span class="feature-label">A.I. Powered</span>
+            </div>
+            <div class="feature" id="realtimeFeature">
+                <i class="fas fa-bolt feature-icon"></i>
+                <span class="feature-label">Real-Time</span>
+            </div>
+        </div>
+    </div>
 
-            <!-- Speech to Text Section -->
-            <div class="speech-container">
-                <h3>Speech to Text</h3>
-                <p id="speech-output">Say something...</p>
-                <div class="button-group">
-                    <button id="start-listening" class="btn btn-primary">Start Listening</button>
-                    <button id="stop-listening" class="btn btn-secondary">Stop Listening</button>
+    <!-- Welcome / Sign In Page -->
+    <div id="welcomePage" class="page hidden">
+        <div class="welcome-card">
+            <h2 class="welcome-title">Welcome to SIGN A.I INTERPRETER</h2>
+            <p class="welcome-subtitle">Sign in to start interpreting sign language in real-time. Your privacy is protected and all processing happens locally.</p>
+            
+            <div class="signin-buttons">
+                <!-- Simplified: Clicking any of these will just proceed as requested -->
+                <button id="googleSignIn" class="signin-btn google-btn">
+                    <i class="fab fa-google"></i> Continue with Google
+                </button>
+                <button id="githubSignIn" class="signin-btn github-btn">
+                    <i class="fab fa-github"></i> Continue with GitHub
+                </button>
+                <button id="guestSignIn" class="signin-btn guest-btn">
+                    <i class="fas fa-user-clock"></i> Continue as Guest
+                </button>
+            </div>
+            
+            <p style="color: #b0e9ff; font-size: 0.9rem;">By continuing, you agree to our Terms of Service and Privacy Policy</p>
+        </div>
+    </div>
+
+    <!-- Permissions Page -->
+    <div id="permissionsPage" class="page hidden">
+        <div class="permissions-card">
+            <h2 class="permissions-title">Permissions Required</h2>
+            <p style="color: #b0e9ff; margin-bottom: 2rem; text-align: center; font-size: 1.1rem;">To provide the best experience, we need access to:</p>
+            
+            <div class="permissions-list">
+                <div class="permission-item">
+                    <div class="permission-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <div class="permission-text">
+                        <h4>Camera Access</h4>
+                        <p>Required for real-time sign language interpretation. We only process video locally and never store or transmit it.</p>
+                    </div>
+                </div>
+                
+                <div class="permission-item">
+                    <div class="permission-icon">
+                        <i class="fas fa-microphone"></i>
+                    </div>
+                    <div class="permission-text">
+                        <h4>Microphone Access</h4>
+                        <p>Required for speech-to-text functionality. Your audio is processed in real-time and never recorded.</p>
+                    </div>
                 </div>
             </div>
-        </main>
+            
+            <div class="permission-buttons">
+                <button id="allowPermissionsBtn" class="permission-btn allow-btn">Allow All</button>
+                <button id="helpBtn" class="permission-btn deny-btn">Need Help?</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Page -->
+    <div id="helpPage" class="page hidden">
+        <div class="help-card">
+            <h2 class="help-title">How to Enable Camera & Microphone</h2>
+            
+            <div class="help-steps">
+                <div class="help-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Check Browser Permissions</h4>
+                        <p>When prompted, click "Allow" for both camera and microphone access. If you accidentally clicked "Block", you'll need to reset permissions in your browser settings.</p>
+                    </div>
+                </div>
+                
+                <div class="help-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Browser Settings</h4>
+                        <p>Go to your browser settings → Privacy and Security → Site Settings → Camera/Microphone. Find "SIGN A.I INTERPRETER" and change the permission to "Allow".</p>
+                    </div>
+                </div>
+                
+                <div class="help-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Device Permissions</h4>
+                        <p>Make sure your device allows camera and microphone access at the system level. Check your operating system's privacy settings.</p>
+                    </div>
+                </div>
+                
+                <div class="help-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Hardware Check</h4>
+                        <p>Ensure your camera and microphone are properly connected and not being used by another application.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="help-buttons">
+                <button id="tryAgainBtn" class="permission-btn allow-btn">Try Again</button>
+                <button id="skipToDemoBtn" class="permission-btn deny-btn">Skip to Demo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interpreter Screen -->
+    <div id="interpreterPage" class="page hidden">
+        <div class="interpreter-header">
+            <div class="header-title">
+                <i class="fas fa-hands"></i>
+                <span>SIGN A.I INTERPRETER</span>
+            </div>
+            <div class="header-controls">
+                <button id="guideBtn" class="control-btn">
+                    <i class="fas fa-book"></i> Guide
+                </button>
+                <button id="toggleVideoBtn" class="control-btn">
+                    <i class="fas fa-video"></i> Camera: ON
+                </button>
+                <button id="switchCameraBtn" class="control-btn">
+                    <i class="fas fa-sync-alt"></i> Switch
+                </button>
+                <button id="toggleAudioBtn" class="control-btn">
+                    <i class="fas fa-microphone"></i> Audio: OFF
+                </button>
+                <button id="logoutBtn" class="control-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+
+        <!-- Gesture Guide Modal -->
+        <div id="guideModal" class="modal hidden">
+            <div class="modal-content" style="max-width: 800px; max-height: 80vh; overflow-y: auto;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h2 style="color: #40e0d0;"><i class="fas fa-hands"></i> Gesture Guide</h2>
+                    <button id="closeGuideBtn" style="background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer;">&times;</button>
+                </div>
+                <div id="guideContent" style="color: #b0e9ff; line-height: 1.6;">
+                    <!-- Content will be populated by JS -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="interpreter-content">
+            <div class="camera-section">
+                <div class="camera-feed">
+                    <video id="cameraVideo" autoplay playsinline style="display: none;"></video>
+                    <canvas id="output-canvas"></canvas>
+                    <div class="gesture-overlay">
+                        <div class="gesture-label">Detected Gesture:</div>
+                        <div id="detectedGesture" class="gesture-value">None</div>
+                    </div>
+                </div>
+                <p style="color: #b0e9ff; margin-top: 1.5rem; text-align: center;">Position your hands in view for real-time gesture recognition</p>
+            </div>
+            
+            <div class="audio-section">
+                <h3 class="audio-title">
+                    <i class="fas fa-microphone-alt"></i>
+                    <span>Speech to Text</span>
+                </h3>
+                
+                <div class="audio-visualizer" id="audioVisualizer">
+                    <!-- Audio bars will be generated by JS -->
+                </div>
+                
+                <div class="audio-controls">
+                    <button id="startAudioBtn" class="audio-btn start-audio">
+                        <i class="fas fa-play"></i> Start Listening
+                    </button>
+                    <button id="stopAudioBtn" class="audio-btn stop-audio" disabled>
+                        <i class="fas fa-stop"></i> Stop Listening
+                    </button>
+                </div>
+                
+                <div class="transcript-box" id="transcriptBox">
+                    <strong>Transcript:</strong><br><br>
+                    <span id="transcriptText">Click "Start Listening" to begin speech recognition. Your speech will appear here in real-time.</span>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- MediaPipe CDN - CRITICAL: Load in correct order -->
@@ -50,6 +240,6 @@
 
     <!-- Your JavaScript Files -->
     <script src="src/gesture-detection.js"></script>
-    <script src="src/main.js"></script>
+    <script src="src/app.js"></script>
 </body>
 </html>

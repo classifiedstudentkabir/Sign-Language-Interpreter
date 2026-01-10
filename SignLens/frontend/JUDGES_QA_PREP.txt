@@ -1,0 +1,99 @@
+=============================================================================
+SIGNLENS - JUDGES Q&A PREPARATION GUIDE
+Target Audience: Hackathon Judges
+Theme: Assistive Technology & Inclusive Education
+=============================================================================
+
+-----------------------------------------------------------------------------
+1. Why did you choose the "Assistive Technology & Inclusive Education" theme?
+-----------------------------------------------------------------------------
+ANSWER:
+"We believe that communication is a fundamental human right, not a privilege. In our research, we found that the gap between the hearing and non-hearing communities isn't due to a lack of ability, but a lack of accessible tools. We chose this theme because we wanted to use technology to bridge that gap. By building a tool that translates gestures into text in real-time, we aren't just writing code; we are trying to foster inclusivity in classrooms and workplaces where sign language interpreters aren't always available."
+
+-----------------------------------------------------------------------------
+2. What are you contributing with this project?
+-----------------------------------------------------------------------------
+ANSWER:
+"We are contributing a low-barrier, zero-cost communication bridge. Most assistive tech requires expensive sensors, gloves, or powerful computers. SignLens contributes accessibility: it runs on any standard laptop or phone with a camera. We are democratizing access to sign language translation tools, making it easier for educators to teach and for students to learn and communicate."
+
+-----------------------------------------------------------------------------
+3. What is the purpose of making this web-based?
+-----------------------------------------------------------------------------
+ANSWER:
+"Accessibility and friction reduction. If we built a desktop app, users would have to download large files, install dependencies, and worry about operating system compatibility (Windows vs. Mac). By making it web-based, we achieve 'Zero-Install' access. A user can walk into a public library, open a browser, and start communicating immediately. It ensures our tool is available to anyone with an internet connection."
+
+-----------------------------------------------------------------------------
+4. Why not an app or software? Why web-based?
+-----------------------------------------------------------------------------
+ANSWER:
+"Native apps create barriers. You have to go to an app store, sign in, and download updates. Web technologies have advanced to the point where they are powerful enough to run Computer Vision models directly in the browser. This approach allows us to update the model instantly for everyone without them needing to download a patch. It’s the fastest way to deploy assistive tech to the people who need it most."
+
+-----------------------------------------------------------------------------
+5. Why is it free and why no patent?
+-----------------------------------------------------------------------------
+ANSWER:
+"Our goal is social impact, not profit. Assistive technology is often prohibitively expensive, which hurts the very people it's meant to help. By keeping it free and open-source, we invite the developer community to contribute—adding more gestures, languages, or features. We believe that tools for basic human connection should remain open for the benefit of humanity."
+
+-----------------------------------------------------------------------------
+6. Who do you think it will be useful for (besides deaf people)?
+-----------------------------------------------------------------------------
+ANSWER:
+"While the primary use case is the Deaf and Hard of Hearing community, SignLens is also powerful for:
+1. Non-verbal individuals (e.g., people with autism or recovering from strokes).
+2. Students learning ASL (it provides instant visual feedback on if they are doing the sign correctly).
+3. Silent environments (libraries, hospitals at night).
+4. Tactical or industrial environments where noise levels make audio communication impossible."( news channel )
+
+-----------------------------------------------------------------------------
+7. What references did you use to make this project?
+-----------------------------------------------------------------------------
+ANSWER:
+"We referenced standard American Sign Language (ASL) dictionaries for gesture accuracy. Technically, we utilized documentation from Google's MediaPipe for the underlying hand-tracking technology, and we studied geometric algorithms to accurately calculate finger angles and positions for our custom classifier."
+
+-----------------------------------------------------------------------------
+8. What tools did you use to build this?
+-----------------------------------------------------------------------------
+ANSWER:
+"1. Frontend: HTML5, CSS3, and JavaScript (Vanilla) for a lightweight, fast performance.
+2. AI/ML: Google MediaPipe Hands for identifying the 21 key landmarks on the hand.
+3. Logic: Custom JavaScript algorithms to calculate vector geometry (identifying gestures based on finger positions).
+4. Version Control: Git and GitHub for team collaboration."
+
+-----------------------------------------------------------------------------
+9. How is this project different from already existing sign language translators?
+-----------------------------------------------------------------------------
+ANSWER:
+"Many existing solutions are either theoretical research papers that don't actually run in real-time, or they are expensive, heavy apps. SignLens differs because:
+1. It is lightweight and runs entirely in the browser (Edge computing).
+2. It respects privacy (video data is processed locally, not sent to a server).
+3. We implemented 'Two-Hand Support' and custom context gestures (like 'We are Silent Coders'), which shows the system is flexible and customizable, unlike rigid pre-trained models."
+
+-----------------------------------------------------------------------------
+10. Why is there no admin panel?
+-----------------------------------------------------------------------------
+ANSWER:
+"This was a deliberate 'Privacy by Design' choice. Since the application runs entirely on the client-side (the user's browser), we do not store user data, video feeds, or login credentials. Therefore, an admin panel isn't necessary. This ensures that users can trust the tool completely—no one is watching them, and no data is being harvested."
+
+-----------------------------------------------------------------------------
+11. If created for education, what makes this special compared to other tools?
+-----------------------------------------------------------------------------
+ANSWER:
+"In an educational setting, 'Feedback' is key. If a student looks at a static picture in a book, they don't know if they are copying it correctly. SignLens acts as an interactive mirror. It gives instant positive reinforcement (turning the text green, showing the word) when the student gets it right. This gamifies the learning process and makes it engaging, which books or video tutorials cannot do."
+
+-----------------------------------------------------------------------------
+12. How does the gesture recognition actually work? (Technical Explanation)
+-----------------------------------------------------------------------------
+ANSWER:
+"We use a two-step process:
+1. Extraction: We use MediaPipe to detect the hand and extract 21 specific 'landmarks' (joints) in 3D space (x, y, z coordinates).
+2. Classification: We don't just guess; we use geometry. We calculate the Euclidean distance between fingertips and joints to determine if a finger is 'curled' or 'extended'. We then look at the combination of fingers (e.g., Index Extended + Others Curled = 'Number 1'). For two-handed gestures, we analyze the relationship between the left and right hand simultaneously."
+
+=============================================================================
+BONUS: T ips for Kabir (Presenter)
+=============================================================================
+1. The "Team" Question: If they ask "Who did what?", be honest but generous. 
+   "I focused on the core coding and system stability, ensuring the demo works today. Harshada handled the ML research and logic, and Samiksha managed the UI and user experience. We played to our strengths."
+
+2. The "Privacy" Selling Point: Judges love privacy. Emphasize that because it's client-side JS, the camera stream NEVER leaves the laptop. It's 100% private.
+
+3. The "Easter Egg": When demonstrating, show the "We are Silent Coders" gesture. Judges love seeing that you programmed something specific and fun for the event. It proves you understand the code deeply.
