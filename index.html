@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignLens - AI-Based Sign Language Interpreter</title>
+    <!-- Point to the Old CSS file in frontend/ -->
+    <link rel="stylesheet" href="SignLens/frontend/old-style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>SignLens - AI-Based Sign Language Interpreter</h1>
+        </header>
+
+        <main>
+            <!-- Video Container -->
+            <div class="video-container">
+                <video id="webcam" autoplay playsinline></video>
+                <canvas id="output-canvas"></canvas>
+            </div>
+
+            <!-- Gesture Display -->
+            <div class="gesture-container">
+                <h2>Detected Gesture:</h2>
+                <div id="gesture-text">No gesture detected</div>
+            </div>
+
+            <!-- Debug Info (Optional) -->
+            <div class="debug-container" id="debug-info" style="display: none;">
+                <small>Debug: <span id="debug-text"></span></small>
+            </div>
+
+            <!-- Speech to Text Section -->
+            <div class="speech-container">
+                <h3>Speech to Text</h3>
+                <p id="speech-output">Say something...</p>
+                <div class="button-group">
+                    <button id="start-listening" class="btn btn-primary">Start Listening</button>
+                    <button id="stop-listening" class="btn btn-secondary">Stop Listening</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- MediaPipe CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script> 
+
+    <!-- Project Scripts (Pointing to frontend/src) -->
+    <script src="SignLens/frontend/src/gesture-detection.js"></script>
+    <script src="SignLens/frontend/src/main.js"></script>
+</body>
+</html>
