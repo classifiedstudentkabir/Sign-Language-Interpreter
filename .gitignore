@@ -1,0 +1,8 @@
+*.mp4
+# Ignore all backup zip files
+*.zip
+
+# Optional: backup folders
+*_backup/
+backup*/
+
