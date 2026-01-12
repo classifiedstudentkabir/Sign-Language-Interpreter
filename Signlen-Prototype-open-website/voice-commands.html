@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Commands - GestureAI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-hand-sparkles"></i>
+                GestureAI
+            </a>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="hand-gestures.html" class="nav-link">Hand Gestures</a>
+                <a href="eye-tracking.html" class="nav-link">Eye Tracking</a>
+                <a href="voice-commands.html" class="nav-link active">Voice Commands</a>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="feature-page">
+        <div class="feature-content">
+            <div class="feature-header">
+                <h1>
+                    <i class="fas fa-microphone"></i>
+                    Voice Command Control
+                </h1>
+                <p>Speak naturally to control your device. Advanced speech recognition with real-time processing and multi-language support.</p>
+            </div>
+
+            <div class="voice-control-container">
+                <div class="microphone-visual">
+                    <div class="mic-container">
+                        <div class="mic-icon">
+                            <i class="fas fa-microphone"></i>
+                        </div>
+                        <div class="sound-waves">
+                            <div class="wave wave-1"></div>
+                            <div class="wave wave-2"></div>
+                            <div class="wave wave-3"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-panel">
+                    <button id="startVoice" class="control-button">
+                        <i class="fas fa-microphone"></i>
+                        Start Voice Recognition
+                    </button>
+                    <button id="stopVoice" class="control-button" style="display: none;">
+                        <i class="fas fa-microphone-slash"></i>
+                        Stop Recognition
+                    </button>
+                </div>
+
+                <div class="voice-settings">
+                    <div class="setting-group">
+                        <label for="language">Language:</label>
+                        <select id="language" class="setting-select">
+                            <option value="en-US">English (US)</option>
+                            <option value="en-GB">English (UK)</option>
+                            <option value="es-ES">Spanish</option>
+                            <option value="fr-FR">French</option>
+                            <option value="de-DE">German</option>
+                            <option value="it-IT">Italian</option>
+                        </select>
+                    </div>
+                    <div class="setting-group">
+                        <label for="sensitivity">Sensitivity:</label>
+                        <input type="range" id="sensitivity" class="setting-range" min="0.1" max="1" step="0.1" value="0.5">
+                        <span class="range-value">50%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gesture-guide">
+                <h3>
+                    <i class="fas fa-comments"></i>
+                    Available Commands
+                </h3>
+                <div class="command-categories">
+                    <div class="command-category">
+                        <h4><i class="fas fa-mouse"></i> Navigation</h4>
+                        <div class="gestures-grid">
+                            <div class="gesture-guide-item">
+                                <div class="gesture-icon">
+                                    <i class="fas fa-arrow-up"></i>
+                                </div>
+                                <div class="gesture-info">
+                                    <h5>"Scroll Up"</h5>
+                                    <p>Scroll page upward</p>
+                                </div>
+                            </div>
+                            <div class="gesture-guide-item">
+                                <div class="gesture-icon">
+                                    <i class="fas fa-arrow-down"></i>
+                                </div>
+                                <div class="gesture-info">
+                                    <h5>"Scroll Down"</h5>
+                                    <p>Scroll page downward</p>
+                                </div>
+                            </div>
+                            <div class="gesture-guide-item">
+                                <div class="gesture-icon">
+                                    <i class="fas fa-home"></i>
+                                </div>
+                                <div class="gesture-info">
+                                    <h5>"Go Home"</h5>
+                                    <p>Navigate to homepage</p>
+                                </div>
+                            </div>
+                            <div class="gesture-guide-item">
+                                <div class="gesture-icon">
+                                    <i class="fas fa-arrow-left"></i>
+                                </div>
+                                <div class="gesture-info">
+                                    <h5>"Go Back"</h5>
+                                    <p>Navigate to previous page</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="command-category">
+                        <h4><i class="fas fa-cog"></i> Control</h4>
+                        <div class="gestures-grid">
+                            <div class="gesture-guide-item">
+                                <div class="gesture-icon">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                                <div class="gesture-info">
+                                    <h5>"Start"</h5>
+                                    <p>Begin current action</p>
+                                </div>
+                            </div>
+                            <div class="gesture-guide-item">
+                                <div class="gesture-icon">
+                                    <i class="fas fa-stop"></i>
+                                </div>
+                                <div class="gesture-info">
+                                    <h5>"Stop"</h5>
+                                    <p>Stop current action</p>
+                                </div>
+                            </div>
+                            <div class="gesture-guide-item">
+                                <div class="gesture-icon">
+                                    <i class="fas fa-refresh"></i>
+                                </div>
+                                <div class="gesture-info">
+                                    <h5>"Refresh"</h5>
+                                    <p>Reload current page</p>
+                                </div>
+                            </div>
+                            <div class="gesture-guide-item">
+                                <div class="gesture-icon">
+                                    <i class="fas fa-times"></i>
+                                </div>
+                                <div class="gesture-info">
+                                    <h5>"Close"</h5>
+                                    <p>Close current window</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="transcript-panel">
+                <h3>
+                    <i class="fas fa-file-alt"></i>
+                    Live Transcript
+                </h3>
+                <div id="transcript" class="transcript-content">
+                    <p class="transcript-placeholder">Your speech will appear here...</p>
+                </div>
+                <div class="transcript-controls">
+                    <button id="clearTranscript" class="transcript-btn">
+                        <i class="fas fa-trash"></i>
+                        Clear
+                    </button>
+                    <button id="copyTranscript" class="transcript-btn">
+                        <i class="fas fa-copy"></i>
+                        Copy
+                    </button>
+                </div>
+            </div>
+
+
+
+            <div class="navigation-buttons">
+                <a href="index.html" class="nav-btn">
+                    <i class="fas fa-home"></i>
+                    Back to Home
+                </a>
+                <a href="hand-gestures.html" class="nav-btn">
+                    <i class="fas fa-hand-paper"></i>
+                    Try Hand Gestures
+                </a>
+                <a href="eye-tracking.html" class="nav-btn">
+                    <i class="fas fa-eye"></i>
+                    Try Eye Tracking
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="gesture-feedback" id="gestureFeedback">
+        <div class="feedback-content">
+            <i class="fas fa-microphone"></i>
+            <span>Voice Command Recognized!</span>
+        </div>
+    </div>
+
+    <script src="assets/js/voice.js"></script>
+</body>
+</html>

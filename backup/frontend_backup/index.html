@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SignLens – Hand Detection</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <h1>SignLens – AI-Based Sign Language Interpreter</h1>
+
+  <div class="camera-container">
+    <video id="video" autoplay playsinline muted></video>
+    <canvas id="canvas"></canvas>
+    <div class="gesture-container">
+      <h2>Detected Gesture:</h2>
+      <div id="gesture-text">No gesture detected</div>
+    </div>
+    <!-- SPEECH TO TEXT SECTION -->
+    <div class="speech-box">
+      <h3>Speech to Text</h3>
+
+      <div id="speechText">Say something...</div>
+
+      <button id="startListen">Start Listening</button>
+      <button id="stopListen">Stop Listening</button>
+    </div>
+
+  </div>
+
+  <div class="controls">
+    <!-- <button id="startBtn">Start Camera</button>
+    <button id="stopBtn">Stop Camera</button> -->
+  </div>
+
+  <div id="status" class="status" aria-live="polite"></div>
+
+  <!-- MediaPipe Hands (GLOBAL) -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+
+  <!-- MediaPipe Camera Utils (GLOBAL) -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+
+  <!-- Your App -->
+  <script src="src/gesture-detection.js"></script>
+  <script src="./src/main.js"></script>
+
+
+</body>
+</html>
+
+<!--python -m http.server 8000 run this in terminal to start a local server -->
